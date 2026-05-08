@@ -507,21 +507,172 @@ load();
 
 };
 
-window.sendFees = async function(){
-const treasurySnap = await get(ref(db,"treasury"));
-const adminSnap = await get(ref(db,"users/99999999"));
+/* =========================
+📤 ENVOYER COMMISSION NATIONALE
+========================= */
 
-let t = treasurySnap.val();
+window.sendNationalFees = async function(){
+
+const treasurySnap =
+await get(ref(db,"treasury"));
+
+const adminSnap =
+await get(ref(db,"users/+22399999999"));
+
+if(!treasurySnap.exists() || !adminSnap.exists()){
+alert("❌ Données introuvables");
+return;
+}
+
+let treasury = treasurySnap.val();
 let admin = adminSnap.val();
 
-admin.solde += t.balance;
-t.balance = 0;
+let amount =
+Number(treasury.national?.balance || 0);
 
-await update(ref(db,"users/99999999"), admin);
-await update(ref(db,"treasury"), t);
+if(amount <= 0){
+alert("❌ Aucun frais national");
+return;
+}
 
-alert("✅ Trésorerie envoyée à l'admin !");
+/* 🔥 crédit admin */
+admin.solde =
+Number(admin.solde || 0) + amount;
+
+/* 🔥 reset */
+treasury.national.balance = 0;
+
+/* 🔥 sauvegarde */
+await update(
+ref(db,"users/+22399999999"),
+{
+solde: admin.solde
+}
+);
+
+await update(
+ref(db,"treasury/national"),
+{
+balance:0
+}
+);
+
+alert("✅ Frais nationaux envoyés");
+
 load();
+
+};
+
+/* =========================
+📤 ENVOYER COMMISSION INTERNATIONALE
+========================= */
+
+window.sendInternationalFees = async function(){
+
+const treasurySnap =
+await get(ref(db,"treasury"));
+
+const adminSnap =
+await get(ref(db,"users/+22399999999"));
+
+if(!treasurySnap.exists() || !adminSnap.exists()){
+alert("❌ Données introuvables");
+return;
+}
+
+let treasury = treasurySnap.val();
+let admin = adminSnap.val();
+
+let amount =
+Number(treasury.international?.balance || 0);
+
+if(amount <= 0){
+alert("❌ Aucun frais international");
+return;
+}
+
+/* 🔥 crédit admin */
+admin.solde =
+Number(admin.solde || 0) + amount;
+
+/* 🔥 reset */
+treasury.international.balance = 0;
+
+/* 🔥 sauvegarde */
+await update(
+ref(db,"users/+22399999999"),
+{
+solde: admin.solde
+}
+);
+
+await update(
+ref(db,"treasury/international"),
+{
+balance:0
+}
+);
+
+alert("✅ Frais internationaux envoyés");
+
+load();
+
+};
+
+/* =========================
+📤 ENVOYER FONDS ETAT
+========================= */
+
+window.sendStartupFees = async function(){
+
+const treasurySnap =
+await get(ref(db,"treasury"));
+
+const stateSnap =
+await get(ref(db,"users/+22375757575"));
+
+if(!treasurySnap.exists() || !stateSnap.exists()){
+alert("❌ Données introuvables");
+return;
+}
+
+let treasury = treasurySnap.val();
+let state = stateSnap.val();
+
+let amount =
+Number(treasury.startup?.balance || 0);
+
+if(amount <= 0){
+alert("❌ Aucun fonds disponible");
+return;
+}
+
+/* 🔥 crédit Etat */
+state.solde =
+Number(state.solde || 0) + amount;
+
+/* 🔥 reset */
+treasury.startup.balance = 0;
+
+/* 🔥 sauvegarde */
+await update(
+ref(db,"users/+22375757575"),
+{
+solde: state.solde
+}
+);
+
+await update(
+ref(db,"treasury/startup"),
+{
+balance:0
+}
+);
+
+alert("✅ Fonds envoyés à l'Etat");
+
+load();
+
 };
 
 window.goBack = function(){
