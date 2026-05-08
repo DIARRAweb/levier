@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ma Money — Paiement Numérique</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.hero-wall {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+
+.hero-wall video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .hero-wall video {
+    object-fit: contain;
+    background: black;
+  }
+}
+
+.hero-wall video,
+.hero-wall img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.9));
+  z-index: -1;
+}
+
+.hero-content {
+  text-align: center;
+  color: white;
+  padding-top: 14vh;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.hero-content h2 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  opacity: 0.95;
+}
+
+.marketing {
+  margin-top: 50px;
+  background: rgba(255,255,255,0.97);
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  color: #222;
+  text-align: left;
+}
+
+.faq-item {
+  border-left: 5px solid #ff6a00;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.faq-item:hover {
+  transform: translateX(5px);
+}
+
+.faq-question {
+  font-weight: bold;
+  color: #ff6a00;
+  display: flex;
+  justify-content: space-between;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: 0.3s ease;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 300px;
+  opacity: 1;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.feature-card {
+  background: white;
+  padding: 16px;
+  border-radius: 14px;
+  border-left: 5px solid #ff6a00;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.06);
+}
+
+footer {
+  text-align: center;
+  padding: 14px;
+  color: white;
+  margin-top: 50px;
+  background: rgba(0,0,0,0.45);
+}
+
+.audio-btn {
+position: fixed;
+bottom: 15px;
+right: 15px;
+z-index: 10;
+
+background: rgba(0,0,0,0.35);
+backdrop-filter: blur(6px);
+
+border: none;
+border-radius: 50%;
+
+width: 42px;
+height: 42px;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+color: white;
+font-size: 16px;
+cursor: pointer;
+
+opacity: 0.6;
+transition: 0.2s;
+}
+
+.audio-btn:hover {
+opacity: 1;
+transform: scale(1.1);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>💰 Ma Money — Paiement Numérique</h1>
+</header>
+
+<!-- BACKGROUND MEDIA -->
+<div class="hero-wall">
+<video id="bgVideo" playsinline></video>
+<img id="bgImage">
+</div>
+
+<button id="toggleAudio" class="audio-btn">🔇</button>
+
+<div class="hero-overlay"></div>
+
+<main class="hero-content">
+
+<h2>La nouvelle génération du paiement au Mali 🇲🇱</h2>
+<p>Envoyez, recevez et gérez votre argent rapidement — partout au Mali</p>
+
+<a href="login.html" class="btn" style="max-width:260px; margin:auto;">Se connecter</a>
+
+<div class="marketing">
+
+<h3 style="color:#ff6a00;">💡 Tout savoir sur Ma Money</h3>
+
+<div class="faq-item">
+  <div class="faq-question">C’est quoi Ma Money ? <span class="icon">➕</span></div>
+  <div class="faq-answer">
+    Ma Money est une plateforme de paiement numérique malienne conçue pour simplifier les transactions financières, sécuriser l’argent des utilisateurs et accélérer l’économie nationale.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">🚀 Pourquoi Ma Money ? <span class="icon">➕</span></div>
+  <div class="faq-answer">
+    Ma Money offre des transferts rapides, des frais réduits, une interface moderne, une sécurité avancée et une solution adaptée aux réalités du Mali.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">🇲🇱 D’où vient l’idée Ma Money ? <span class="icon">➕</span></div>
+  <div class="faq-answer">
+    L’idée est née du besoin de créer une solution locale fiable, moderne et accessible pour tous les Maliens, afin d’accompagner la transformation numérique de l’Afrique.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">⚡ Que peut faire Ma Money ? <span class="icon">➕</span></div>
+  <div class="faq-answer">
+    Transfert instantané, gestion du solde en temps réel, sécurité renforcée, historique des transactions, administration avancée, et expansion future vers paiements marchands.
+  </div>
+</div>
+
+<h3 style="margin-top:20px;color:#ff6a00;">✨ Fonctionnalités clés</h3>
+
+<div class="features">
+  <div class="feature-card">📱 Transfert instantané</div>
+  <div class="feature-card">🔐 Sécurité renforcée</div>
+  <div class="feature-card">💰 Gestion du solde</div>
+  <div class="feature-card">🧾 Historique détaillé</div>
+  <div class="feature-card">🛡 Administration pro</div>
+  <div class="feature-card">🇲🇱 100% Mali</div>
+</div>
+
+</div>
+</main>
+
+<footer>
+© Ma Money 2026 — Idrissa DIARRA 🇲🇱
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB2cVumUWZ_cDUC-kd7FUpUaXEODB1CCNE",
+    authDomain: "ma-money5.firebaseapp.com",
+    databaseURL: "https://ma-money5-default-rtdb.firebaseio.com",
+    projectId: "ma-money5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const video = document.getElementById("bgVideo");
+const image = document.getElementById("bgImage");
+const toggleAudioBtn = document.getElementById("toggleAudio");
+
+let isMuted = true;
+let currentIsVideo = false;
+
+/* 🔊 AJOUTE ICI */
+toggleAudioBtn.addEventListener("click", () => {
+
+  isMuted = !isMuted;
+
+  if(currentIsVideo){
+    video.muted = isMuted;
+  }
+
+  toggleAudioBtn.textContent = isMuted ? "🔇" : "🔊";
+
+});
+
+// Fallback local si Firebase vide
+let maliMedia = [
+  "https://images.unsplash.com/photo-1600172454520-134a542d7c97",
+  "https://images.unsplash.com/photo-1524492412937-b28074a5d7da",
+  "https://images.unsplash.com/photo-1549880338-65ddcdfd017b",
+  "https://cdn.pixabay.com/video/2018/10/09/18675-297657059_large.mp4"
+];
+
+let index = 0;
+let interval;
+
+// Switch media
+let currentTimeout;
+
+function switchMedia(){
+
+if (!maliMedia.length) return;
+
+clearTimeout(currentTimeout);
+
+const ad = maliMedia[index];
+
+// 🎬 VIDEO
+if (ad.type === "video") {
+
+video.src = ad.url;
+video.style.display = "block";
+image.style.display = "none";
+video.muted = isMuted;
+currentIsVideo = true;
+
+// ⚡ attendre chargement réel
+video.onloadedmetadata = () => {
+
+video.play().catch(()=>{});
+
+// ⏱ durée = durée réelle vidéo OU définie
+const duration = ad.duration || video.duration || 10;
+
+currentTimeout = setTimeout(() => {
+index = (index + 1) % maliMedia.length;
+switchMedia();
+}, duration * 1000);
+
+};
+
+}
+
+// 🖼 IMAGE
+else {
+
+image.src = ad.url;
+image.style.display = "block";
+video.style.display = "none";
+currentIsVideo = false;
+
+const duration = ad.duration || 10;
+
+currentTimeout = setTimeout(() => {
+index = (index + 1) % maliMedia.length;
+switchMedia();
+}, duration * 1000);
+
+}
+
+}
+
+// Restart slider
+function restartSlider(){
+index = 0;
+switchMedia();
+}
+restartSlider();
+
+// FAQ animation
+document.querySelectorAll(".faq-item").forEach(item => {
+  item.addEventListener("click", () => {
+    item.classList.toggle("active");
+    const icon = item.querySelector(".icon");
+    icon.textContent = item.classList.contains("active") ? "➖" : "➕";
+  });
+});
+
+// 🔥 FIREBASE BACKGROUND SYNC — STRUCTURE background-manager.html
+onValue(ref(db, "ads"), snap => {
+
+const data = snap.val();
+if (!data) return;
+
+maliMedia = Object.values(data);
+
+index = 0;
+restartSlider();
+
+});
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Gestion Pub — Ma Money</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  background:#0b132b;
+  color:white;
+  padding:20px;
+}
+.card {
+  max-width:600px;
+  margin:auto;
+  background:#1c2541;
+  padding:20px;
+  border-radius:15px;
+}
+button {
+  padding:12px;
+  width:100%;
+  border:none;
+  border-radius:10px;
+  background:#00c896;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+video,img {
+  width:100%;
+  margin-top:10px;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>📢 Ajouter une publicité</h2>
+
+<input type="file" id="fileInput" accept="image/*,video/*">
+<input type="number" id="durationInput" placeholder="Durée en secondes (ex: 30)">
+<button onclick="uploadAd()">📤 Upload Pub</button>
+
+<div id="preview"></div>
+
+<h3>📂 Pubs enregistrées</h3>
+<div id="list"></div>
+
+</div>
+
+<script>
+
+// 🔥 CONFIG FIREBASE
+const firebaseConfig = {
+    apiKey: "AIzaSyB2cVumUWZ_cDUC-kd7FUpUaXEODB1CCNE",
+    authDomain: "ma-money5.firebaseapp.com",
+    databaseURL: "https://ma-money5-default-rtdb.firebaseio.com",
+    projectId: "ma-money5",
+    storageBucket: "ma-money5.firebasestorage.app",
+
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+const storage = firebase.storage();
+
+// 📂 ELEMENTS
+const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
+const list = document.getElementById("list");
+
+// 👀 PREVIEW
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if(!file) return;
+
+  const url = URL.createObjectURL(file);
+
+  if(file.type.includes("video")){
+    preview.innerHTML = `<video src="${url}" controls></video>`;
+  } else {
+    preview.innerHTML = `<img src="${url}">`;
+  }
+});
+
+// 🚀 UPLOAD
+window.uploadAd = function(){
+
+  const file = fileInput.files[0];
+  if(!file) return alert("Choisis un fichier");
+
+  alert("⏳ Upload en cours...");
+
+  const id = Date.now();
+
+  const refStorage = storage.ref("ads/" + id + "_" + file.name);
+
+  refStorage.put(file)
+  .then(async snapshot => {
+
+    const url = await snapshot.ref.getDownloadURL();
+
+    const duration = parseInt(document.getElementById("durationInput").value) || 10;
+
+await db.ref("ads/" + id).set({
+  url: url,
+  type: file.type.includes("video") ? "video" : "image",
+  duration: duration,
+  createdAt: Date.now()
+});
+
+    alert("✅ Upload réussi !");
+
+    fileInput.value="";
+    preview.innerHTML="";
+
+  })
+  .catch(e=>{
+    console.error(e);
+    alert("❌ " + e.message);
+  });
+
+};
+
+// 📥 LOAD PUBS
+function loadAds(){
+  db.ref("ads").on("value", snap => {
+    list.innerHTML="";
+
+    const data = snap.val();
+    if(!data){
+      list.innerHTML="Aucune pub";
+      return;
+    }
+
+    Object.entries(data).reverse().forEach(([id, ad])=>{
+      list.innerHTML += `
+        <div style="margin-bottom:15px">
+
+        ${ad.type === "video"
+        ? `<video src="${ad.url}" muted autoplay loop></video>`
+        : `<img src="${ad.url}">`
+        }
+
+        <button onclick="deleteAd('${id}')" style="background:red;margin-top:5px">
+        🗑 Supprimer
+        </button>
+
+        </div>
+        `;
+    });
+
+  });
+}
+
+loadAds();
+
+window.deleteAd = function(id){
+  if(!confirm("Supprimer cette pub ?")) return;
+  db.ref("ads/" + id).remove();
+};
+
+</script>
+
+</body>
+</html>
